@@ -18,18 +18,26 @@ describe('Server module', function() {
     describe('/ endpoint', function() {
       it('should respond with a 400 on bad request', done => {
         chai.request(server)
-        .post('/mokeysay')
-        .send({})
+        .post('/')
         .end((err, res) => {
+          let cowsay = cowsay.say({text: 'bad request\n try: localhost 3000/'})
+          expect(res.text.toString()).to.equal(cowsay)
           expect(res.status).to.equal(400);
+          done();
         });
-        done();
       });
     });
     describe('/cowsay endpoint', function() {
       it('should respond with a 200 on proper request', done => {
-
-        done();
+        chai.request(server)
+        .post('./cowsay')
+        .send({text: 'hello world'})
+        .end((err, res) =>
+          let cowsay = cowsay.say({text: 'hello world'})
+          expect(res.text.toString()).to.equal(cowsay)
+          expect(res.status)to.equal(200)
+          done();
+        )
       });
       it('should respond with a 400 on bad request', done => {
 
@@ -47,8 +55,15 @@ describe('Server module', function() {
     });
     describe('/cowsay endpoint', function() {
       it('should respond with a 200 on proper request', done => {
-
-        done();
+        chai.request(server)
+        .get('/cowsay')
+        .query({text: '...'}) //start writing here
+        .end((err, res) => {
+          let cowsay = cowsay.say({text: 'hello world'})
+          expect(res.text.toString()).to.equal(cowsay)
+          expect(res).to.be.status(200)
+          done();
+        })
       });
       it('should respond with a 400 on bad request', done => {
 
