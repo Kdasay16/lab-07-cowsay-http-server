@@ -5,7 +5,6 @@ const http = require('http');
 const url = require('url');
 const queryString = require('querystring');
 const cowsay = require('cowsay');
-console.log(cowsay);
 const PORT = process.env.PORT || 3000;
 
 const server = module.exports = http.createServer(function(request, response) {
@@ -16,10 +15,9 @@ const server = module.exports = http.createServer(function(request, response) {
     if(request.url.pathname === '/cowsay') {
       bodyParser(request, function(err) {
         if(err) throw err;
-        //request.body.text check
         let message = cowsay.say({text: request.body.text});
         console.log(request.body);
-        response.wrireHead(200, {'Content-Type': 'text/plain'});
+        response.writeHead(200, {'Content-Type': 'text/plain'});
         response.write(message);
         response.end();
       });
