@@ -7,16 +7,16 @@ const queryString = require('querystring');
 const cowsay = require('cowsay');
 const PORT = process.env.PORT || 3000;
 
-const server = module.exports = http.createServer(function(request, response) {
-  request.url = url.parse(request.url);
-  request.url.query = queryString.parse(request.url.query);
+const server = module.exports = http.createServer(function(req, response) {
+  req.url = url.parse(req.url);
+  req.url.query = queryString.parse(req.url.query);
 
-  if(request.method === 'POST') {
-    if(request.url.pathname === '/cowsay') {
-      bodyParser(request, function(err) {
+  if(req.method === 'POST') {
+    if(req.url.pathname === '/cowsay') {
+      bodyParser(req, function(err) {
         if(err) throw err;
-        let message = cowsay.say({text: request.body.text});
-        console.log(request.body);
+        let message = cowsay.say({text: req.body.text});
+        console.log(req.body);
         response.writeHead(200, {'Content-Type': 'text/plain'});
         response.write(message);
         response.end();
@@ -31,9 +31,9 @@ const server = module.exports = http.createServer(function(request, response) {
     }
   }
 
-  if(request.method === 'GET') {
-    if(request.url.pathname === '/cowsay') {
-      let message = cowsay.say({text: request.url.query.text});
+  if(req.method === 'GET') {
+    if(req.url.pathname === '/cowsay') {
+      let message = cowsay.say({text: req.url.query.text});
       response.wrireHead(200, {'Content-Type': 'text/plain'});
       response.write(message);
       response.end();

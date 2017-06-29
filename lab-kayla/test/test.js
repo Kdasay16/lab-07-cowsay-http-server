@@ -13,18 +13,23 @@ describe('Server module', function() {
     server.listen(3000);
     done();
   });
+  after(done => {
+    server.close();
+    done();
+  });
 
   describe('POST method', function() {
     describe('/ endpoint', function() {
       it('should respond with a 400 on bad request', done => {
         chai.request(server)
-        .post('/')
+        .post('/monkeysay')
+        .send({})
         .end((err, res) => {
           let cowsay = cowsay.say({text: 'bad request\n try: localhost 3000/'})
           expect(res.text.toString()).to.equal(cowsay)
           expect(res.status).to.equal(400);
-          done();
         });
+        done();
       });
     });
   });
@@ -37,8 +42,8 @@ describe('Server module', function() {
         let cowsay = cowsay.say({text: 'hello world'})//eslint-disable-line
         expect(res.text.toString()).to.equal(cowsay)
         expect(res.status).to.equal(200)
-        done();
       })
+      done();
     });
     it('should respond with a 400 on bad request', done => {
       chai.request(server)
@@ -48,8 +53,8 @@ describe('Server module', function() {
         let cowsay = cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})
         expect(res.text.toString()).to.equal(cowsay)
         expect(res.status).to.equal(400)
-        done();
       });
+      done();
     });
   });
 
@@ -62,8 +67,8 @@ describe('Server module', function() {
           let cowsay = cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})
           expect(res.text.toString()).to.equal(cowsay)
           expect(res.status).to.equal(400)
-          done();
         });
+        done();
       });
     });
   });
@@ -76,8 +81,8 @@ describe('Server module', function() {
         let cowsay = cowsay.say({text: 'hello world'})
         expect(res.text.toString()).to.equal(cowsay)
         expect(res).to.be.status(200)
-        done();
       });
+      done();
     });
     it('should respond with a 400 on bad request', done => {
       chai.request(server)
@@ -86,13 +91,9 @@ describe('Server module', function() {
         let cowsay = cowsay.say({text: 'bad request\ntry: localhost:3000/cowsay?text=howdy'})
         expect(res.text.toString()).to.equal(cowsay)
         expect(res.status).to.equal(400)
-        done();
       });
+      done();
     });
   });
 
-  after(done => {
-    server.close();
-    done();
-  });
 });
